@@ -156,29 +156,58 @@ const empresaTipo = [
     }
 ];
 
-// Cargar gestores al iniciar la aplicación
-cargarGestores();
+//para datos gestors desde app.js
+renderizarGestores(gestores);
 
-function cargarGestores() {
-    console.log("EJECUTANDO cargarGestores()");
-    const seccion = document.getElementById("listaGestores");
-    seccion.innerHTML = "";
-    gestores.forEach(gestor => {
-        // crear columna bootstrap
+function renderizarGestores(lista) {
+    //console.log("entre a renderizarGestores()");
+    const contenedor = document.getElementById("listaGestores");
+    contenedor.innerHTML = "";
+    lista.forEach(gestor => {
         const col = document.createElement("div");
-        col.classList.add("col-md-4", "mb-4");
-        // crear card con componente
+        col.className = "col-md-4";
         const card = CardEmpresa(gestor);
         col.appendChild(card);
-        seccion.appendChild(col);
+        contenedor.appendChild(col);
     });
 }
 
-// Componente Badge para el tipo de empresa
+
+// cargarGestores();
+
+// function cargarGestores() {
+//     console.log("EJECUTANDO cargarGestores()");
+//     const seccion = document.getElementById("listaGestores");
+//     seccion.innerHTML = "";
+//     gestores.forEach(gestor => {
+//         // crear columna bootstrap
+//         const col = document.createElement("div");
+//         col.classList.add("col-md-4", "mb-4");
+//         // crear card con componente
+//         const card = CardEmpresa(gestor);
+//         col.appendChild(card);
+//         seccion.appendChild(col);
+//     });
+// }
+
 function BadgeTipo(tipo) {
     const badge = document.createElement("span");
     badge.className = "badge-tipo";
+    badge.style.backgroundColor = tipo.color.css;
+    // Accesibilidad
+    badge.setAttribute("role", "status");
+    badge.setAttribute(
+        "aria-label",
+        `Tipo de empresa: ${tipo.nombre}`
+    );
+    // Ícono dinámico
     const icon = document.createElement("i");
+    icon.className = `fa ${tipo.icono.FontAwesome} me-1`;
+    icon.setAttribute("role", "img");
+    icon.setAttribute(
+        "aria-label",
+        `Ícono ${tipo.nombre}`
+    );
     // Texto visible
     const texto = document.createElement("span");
     texto.textContent = tipo.nombre;
@@ -187,10 +216,14 @@ function BadgeTipo(tipo) {
     return badge;
 }
 
-// Componente Card para empresa gestora
 function CardEmpresa(gestor) {
     const card = document.createElement("article");
     card.className = "card-gestor";
+    card.setAttribute("tabindex", "0");
+    card.setAttribute(
+        "aria-label",
+        `Empresa gestora ${gestor.nombre}`
+    );
     const header = document.createElement("header");
     const titulo = document.createElement("h3");
     titulo.textContent = gestor.nombre;
